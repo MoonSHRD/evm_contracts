@@ -5,45 +5,44 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 contract Identity is Ownable {
 
-    string username;
-    uint8 state;
+    string Username;
+    uint8 State;
 
-    event IdentityCreated(address indexed owner, string indexed username, string pubKey);
+    event IdentityCreated(address indexed owner, string indexed username);
 
     struct Conversation {
         uint8 state;
         string key;
-        address recipient;
+        string initial_cid;
     }
 
-    mapping(address => Conversation) conversations public;
+    mapping(address => Conversation) conversations;
 
-    constructor() public{}
-
-    function setup(address _owner, string _username) public onlyOwner {
+    constructor(address _owner, string _username) public{
         transferOwnership(_owner);
         setUsername(_username);
-        state = 1;
+        State = 1;
         emit IdentityCreated(_owner, _username);
     }
 
 
+
     function setUsername(string _username) public onlyOwner {
-        username = _username;
+        Username = _username;
     }
 
-    function conversationRequest(address _identity,) public {
-        if (Identity(_identity).conversations[this].state ==2) && (conversations[_identity] <1) {
-            conversations[_identity] = Conversation({pubkey : "", state : 1, initial_cid : ""});
-        }
+    function conversationRequest(address _identity) public {
+        //        if (Identity(_identity).conversations[this].state ==2) && (conversations[_identity] <1) {
+                    conversations[_identity] = Conversation({key : "", state : 1, initial_cid : ""});
+        //        }
     }
 
     function makeConversation(address _identity, string _pubkey, string _messageCid, bool force) public onlyOwner {
         if ((conversations[_identity].state > 0) && (!force)) {
             revert();
         }
-        conversations[_identity] = Conversation({pubkey : _pubkey, state : 2, initial_cid : _message_cid});
-        Identity(_identity).conversationrequest
+        conversations[_identity] = Conversation({key : _pubkey, state : 2, initial_cid : _messageCid});
+        Identity(_identity).conversationRequest(this);
 
     }
 

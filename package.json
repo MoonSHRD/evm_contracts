@@ -8,7 +8,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-contracts": "sol-merger \"./contracts/*.sol\" ./build/"
+    "build-contracts": "sol-merger \"./contracts/*.sol\" ./build/",
+    "clean":"rm build/contracts/*",
+    "rebuild": "truffle compile"
   },
   "keywords": [],
   "author": "",
